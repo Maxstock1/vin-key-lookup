@@ -100,7 +100,7 @@ var SEED = {
   "1HGCM82633A004352":{veh:"2003 Honda Accord EX 3.0L V6",pn:"35118-SDA-A11",buttons:null,freq:"",fcc:"",price:131.89,list:164.86,dealer:"Don Carlton Honda",src:"PartsTech dealer (RepairLink)",seed:true},
   "1C4NJPBB3FD398798":{veh:"2015 Jeep Patriot",pn:"68001702AE",alt:"68000603AC",buttons:null,freq:"",fcc:"",price:172.5,list:231,dealer:"South Pointe Chrysler Jeep Dodge",src:"PartsTech dealer (RepairLink)",seed:true}
 };
-// Ilco Lookalike Coverage Guide 2024 — Toyota Camry cross-reference (year-range fallback when VIN not in SEED)
+// Ilco Lookalike Coverage Guide 2024 — cross-reference by Make|Model (year-range fallback when VIN not in SEED)
 var ILCO = {
   "TOYOTA|CAMRY": [
     {from:2007,to:2008,pn:"89904-48100",fcc:"HYQ14AAB",note:"PRX-TOY-3B6 (3-button prox)"},
@@ -108,6 +108,206 @@ var ILCO = {
     {from:2007,to:2011,pn:"89904-06130 / 89904-06131",fcc:"HYQ14AAB (E-Board 271451-3370) / HYQ14AEM (GNE 6601)",note:"PRX-TOY-4B5 (4-button prox)"},
     {from:2012,to:2017,pn:"89904-06140",fcc:"HYQ14FBA (Board G 00200)",note:"PRX-TOY-4B10 (4-button prox)"},
     {from:2018,to:2021,pn:"89904-06220",fcc:"HYQ14FBC (Board 231451-0351)",note:"PRX-TOY-4B3 (4-button prox)"}
+  ],
+  "TOYOTA|COROLLA": [
+    {from:2010,to:2013,pn:"89070-02620",fcc:"GQ4-29T",note:"RHK-TOY-4B1 (4-button remote head key)"},
+    {from:2014,to:2020,pn:"89904-06140",fcc:"HYQ14FBA",note:"PRX-TOY-4B10 (4-button prox)"}
+  ],
+  "TOYOTA|RAV4": [
+    {from:2013,to:2021,pn:"89070-52F50 / 89070-42820",fcc:"HYQ12BDM",note:"RHK-TOY-3BH3 (3-button head key, Japan built)"},
+    {from:2013,to:2018,pn:"89904-0R080",fcc:"HYQ14FBA",note:"PRX-TOY-4B12 (4-button prox, Japan built)"}
+  ],
+  "TOYOTA|HIGHLANDER": [
+    {from:2014,to:2019,pn:"89070-0R100",fcc:"GQ4-52T",note:"RHK-TOY-4BH2 (4-button head key)"},
+    {from:2017,to:2019,pn:"89904-0E092 / 89904-0E091",fcc:"HYQ14FBA",note:"PRX-TOY-3B9 (3-button prox)"}
+  ],
+  "TOYOTA|PRIUS": [
+    {from:2012,to:2020,pn:"89904-52290",fcc:"HYQ14FBA",note:"PRX-TOY-3B10 (3-button prox)"}
+  ],
+  "TOYOTA|SIENNA": [
+    {from:2011,to:2014,pn:"89742-AE020",fcc:"GQ43VT20T",note:"RKE-TOY-4B3 (4-button remote)"}
+  ],
+  "LEXUS|RX350": [
+    {from:2010,to:2015,pn:"89904-0E031",fcc:"HYQ14ACX",note:"PRX-LEX-4B11 (4-button prox)"},
+    {from:2016,to:2020,pn:"89904-0E160",fcc:"HYQ14FBB",note:"PRX-LEX-4B9 (4-button prox)"}
+  ],
+  "LEXUS|GX460": [
+    {from:2010,to:2020,pn:"89904-60590",fcc:"HYQ14ACX",note:"PRX-LEX-4B12 (4-button prox)"}
+  ],
+  "LEXUS|ES350": [
+    {from:2009,to:2012,pn:"89904-50380",fcc:"HYQ14AAB",note:"PRX-LEX-4B2 (4-button prox)"},
+    {from:2013,to:2018,pn:"89904-30A30 / 89904-30A31 / 89904-06170",fcc:"HYQ14FBA",note:"PRX-LEX-4B7 (4-button prox)"}
+  ],
+  "LEXUS|NX300": [
+    {from:2016,to:2019,pn:"89904-78470 / 89904-78070",fcc:"HYQ14FBA",note:"PRX-LEX-4B10 (4-button prox)"}
+  ],
+  "LEXUS|NX200T": [
+    {from:2015,to:2020,pn:"89904-78460 / 89904-78060",fcc:"HYQ14FBA",note:"PRX-LEX-3B2 (3-button prox)"}
+  ],
+  "LEXUS|IS350": [
+    {from:2014,to:2020,pn:"89904-53651 / 89904-53650",fcc:"HYQ14FBA",note:"PRX-LEX-4B8 (4-button prox)"}
+  ],
+  "HONDA|ACCORD": [
+    {from:2003,to:2007,pn:"35118-SDA-A11",fcc:"OUCG8D-380H-A",note:"RHK-HON-4B1 (4-button remote head key)"},
+    {from:2008,to:2012,pn:"35118-TA0-A00",fcc:"KR55WK49308",note:"RHK-HON-4B3 (4-button, sedan only)"},
+    {from:2013,to:2015,pn:"35118-T2A-A20",fcc:"MLBHLIK6-1T",note:"RHK-HON-4B2 (4-button)"},
+    {from:2016,to:2017,pn:"35118-T2A-A60",fcc:"MLBHLIK6-1TA",note:"RHK-HON-4B8 (4-button)"},
+    {from:2018,to:2021,pn:"72147-TVA-A11",fcc:"CWTWB1G0090",note:"PRX-HON-4B2 (4-button prox)"}
+  ],
+  "HONDA|CIVIC": [
+    {from:2006,to:2011,pn:"35111-SVA-306 / 35118-TR0-A00",fcc:"N5F-S0084A",note:"RHK-HON-4B4 (4-button)"},
+    {from:2014,to:2015,pn:"35118-T2A-A20",fcc:"MLBHLIK6-1T",note:"RHK-HON-4B2 (4-button)"},
+    {from:2016,to:2020,pn:"35118-T2A-A60",fcc:"MLBHLIK6-1TA",note:"RHK-HON-4B8 (4-button)"}
+  ],
+  "HONDA|CR-V": [
+    {from:2007,to:2011,pn:"35111-SWA-306 / 35118-TP6-A10",fcc:"MLBHLIK-1T",note:"RHK-HON-3B1 (3-button)"},
+    {from:2014,to:2016,pn:"35118-TY4-A00",fcc:"MLBHLIK6-1T",note:"RHK-HON-3B8 (3-button)"},
+    {from:2017,to:2020,pn:"35118-TLA-A00 / 35118-TGG-A00",fcc:"MLBHLIK6-1TA",note:"RHK-HON-4B10 (4-button)"}
+  ],
+  "HONDA|PILOT": [
+    {from:2005,to:2008,pn:"CWTWB1U545",fcc:"CWTWBIU545",note:"RHK-HON-3B7 (3-button)"},
+    {from:2009,to:2015,pn:"35118-TA0-A00",fcc:"KR55WK49308",note:"RHK-HON-4B3 (4-button)"},
+    {from:2016,to:2021,pn:"72147-TG7-A11 / 72147-TLA-A01 / 72147-TGG-A21",fcc:"KR5V2X",note:"PRX-HON-5B4 (5-button prox)"}
+  ],
+  "HONDA|ODYSSEY": [
+    {from:2005,to:2010,pn:"72147-SHJ-A21",fcc:"OUCG8D-399H-A",note:"RKE-HON-5B1 (5-button)"},
+    {from:2011,to:2013,pn:"35118-TK8-A10",fcc:"N5F-A04TAA",note:"RHK-HON-5B1 (EX, 5-button)"},
+    {from:2014,to:2017,pn:"72147-TK8-A81",fcc:"KR5V1X",note:"PRX-HON-5B5 (5-button prox)"}
+  ],
+  "HYUNDAI|ACCENT": [
+    {from:2012,to:2014,pn:"95430-1R200",fcc:"TQ8-RKE-3F01",note:"RKE-HYUN-3B2 (3-button)"},
+    {from:2014,to:2017,pn:"95430-1R300",fcc:"TQ8-RKE-4F14",note:"RKE-HYUN-3B4 (3-button)"}
+  ],
+  "HYUNDAI|ELANTRA": [
+    {from:2006,to:2010,pn:"95430-3K200",fcc:"OSLOKA-310T",note:"RKE-HYUN-4B1 (4-button)"},
+    {from:2011,to:2014,pn:"95400-3M100",fcc:"SY5HMFNA04",note:"PRX-HYUN-4B3 (4-button prox)"},
+    {from:2012,to:2017,pn:"95430-A5200",fcc:"TQ8RKE-3F03",note:"RKE-HYUN-4B3 (GT & Touring, 4-button)"}
+  ],
+  "HYUNDAI|SANTA FE": [
+    {from:2007,to:2012,pn:"95411-0W100",fcc:"PINHA-T038",note:"RKE-HYUN-3B3 (3-button)"},
+    {from:2013,to:2016,pn:"95430-4Z100",fcc:"TQ8-RKE-3F04",note:"FLIP-HYUN-4B3 (4-button flip)"},
+    {from:2016,to:2018,pn:"95430-2W110",fcc:"TQ8-RKE-4F31",note:"FLIP-HYUN-4B4 (4-button flip, USA only)"},
+    {from:2019,to:2020,pn:"95440-S2000",fcc:"TQ8-FOB-4F19",note:"PRX-HYUN-4B13 (4-button prox)"},
+    {from:2021,to:2022,pn:"95440-S2500",fcc:"TQ8-FOB-4F26",note:"PRX-HYUN-4B11 (4-button prox)"}
+  ],
+  "HYUNDAI|SONATA": [
+    {from:2007,to:2015,pn:"95430-3K200",fcc:"OSLOKA-310T",note:"RKE-HYUN-4B1 (4-button)"},
+    {from:2019,to:2022,pn:"95440-L1060",fcc:"TQ8-FOB-4F26",note:"PRX-HYUN-5B4 (5-button prox, w/Prox trims)"}
+  ],
+  "HYUNDAI|TUCSON": [
+    {from:2005,to:2015,pn:"95430-2S201 / 95430-2E210",fcc:"OSLOKA-850T",note:"RKE-HYUN-3B1 (3-button)"},
+    {from:2016,to:2021,pn:"95440-D3100",fcc:"TQ8-FOB-4F07",note:"PRX-HYUN-4B10 (4-button prox)"},
+    {from:2017,to:2019,pn:"95440-D3110",fcc:"TQ8-FOB-4F11",note:"PRX-HYUN-4B9 (4-button prox)"},
+    {from:2021,to:2022,pn:"95440-N9070",fcc:"TQ8-FOB-4F26",note:"PRX-HYUN-5B3 (5-button prox)"}
+  ],
+  "HYUNDAI|VELOSTER": [
+    {from:2012,to:2017,pn:"95430-2V100",fcc:"NYOSEKS-TF10ATX",note:"RKE-HYUN-4B2 (4-button)"}
+  ],
+  "KIA|SORENTO": [
+    {from:2015,to:2019,pn:"95440-C6000 / 95440-C5000",fcc:"TQ8-FOB-4F06",note:"PRX-KIA-4B6 (4-button prox)"},
+    {from:2016,to:2020,pn:"95430-C5100",fcc:"OSLOKA-910T",note:"FLIP-KIA-4B8 (4-button flip)"}
+  ],
+  "KIA|OPTIMA": [
+    {from:2009,to:2013,pn:"95440-3N250",fcc:"SY5HMFNA04",note:"PRX-HYUN-4B2 (shared-platform 4-button prox)"}
+  ],
+  "KIA|FORTE": [
+    {from:2011,to:2013,pn:"95440-3N250",fcc:"SY5HMFNA04",note:"PRX-HYUN-4B2 (shared-platform 4-button prox)"}
+  ],
+  "KIA|RIO": [
+    {from:2011,to:2014,pn:"95440-3N250",fcc:"SY5HMFNA04",note:"PRX-HYUN-4B2 (shared-platform 4-button prox)"}
+  ],
+  "KIA|SOUL": [
+    {from:2011,to:2013,pn:"95400-3M100",fcc:"SY5HMFNA04",note:"PRX-HYUN-4B3 (4-button prox)"}
+  ],
+  "KIA|SPORTAGE": [
+    {from:2016,to:2019,pn:"95440-D9000",fcc:"TQ8-FOB-4F08",note:"PRX-KIA-4B5 (4-button prox)"},
+    {from:2019,to:2020,pn:"95440-D9500",fcc:"TQ8-FOB-4F08",note:"PRX-KIA-4B4 (4-button prox)"}
+  ],
+  "JEEP|GRAND CHEROKEE": [
+    {from:2008,to:2013,pn:"68051664AB (range AB–AH)",fcc:"M3N5WY783X / IYZ-C01C",note:"POD-LAL-3B1 (3-button fob)"},
+    {from:2014,to:2020,pn:"68105081AF (range AB–AG)",fcc:"GQ4-53T",note:"POD-LAL-3B3 (3-button fob)"}
+  ],
+  "JEEP|CHEROKEE": [
+    {from:1999,to:2001,pn:"56036859 / 56036860",fcc:"GQ43VT9T",note:"RKE-JEEP-3B1 (3-button)"},
+    {from:2014,to:2023,pn:"68105087AG / 68105087AC",fcc:"GQ4-54T",note:"PRX-JEEP-3B1 (3-button prox)"}
+  ],
+  "JEEP|WRANGLER": [
+    {from:2006,to:2017,pn:"56040649AC (and related variants)",fcc:"OHT692427AA / OHT692713AA",note:"RHK-CHRY-4B1 / 3B1 (3 or 4-button)"},
+    {from:2018,to:2024,pn:"68416782AA",fcc:"OHT1130261",note:"FLIP-JEEP-3B1 (3-button flip)"}
+  ],
+  "JEEP|COMPASS": [
+    {from:2017,to:2023,pn:"68250335AB / 68417820AA",fcc:"M3N-40821302",note:"PRX-JEEP-3B2 / 4B4 (3 or 4-button prox)"}
+  ],
+  "MAZDA|3": [
+    {from:2004,to:2006,pn:"not listed",fcc:"KPU41846",note:"RKE-MAZ-3B2 (3-button remote)"},
+    {from:2008,to:2009,pn:"BAP5-67-5RY",fcc:"KPU41777",note:"RKE-MAZ-4B3 (4-button remote)"},
+    {from:2010,to:2013,pn:"BBM4-67-5RY",fcc:"BGBX1T478SKE125-01",note:"FLIP-MAZ-4B1 (4-button flip)"},
+    {from:2011,to:2015,pn:"CC43-67-5RYC / BBM4-67-5RY",fcc:"BGBX1T478SKE125-01",note:"FLIP-MAZ-3B1 (3-button flip)"}
+  ],
+  "MAZDA|6": [
+    {from:2009,to:2013,pn:"BBM4-67-5RY",fcc:"BGBX1T478SKE125-01",note:"FLIP-MAZ-4B1 (4-button flip)"}
+  ],
+  "MAZDA|CX-9": [
+    {from:2007,to:2015,pn:"CC43-67-5RYC / BBM4-67-5RY",fcc:"BGBX1T478SKE125-01",note:"FLIP-MAZ-3B1 (3-button flip)"}
+  ],
+  "MAZDA|CX-7": [
+    {from:2007,to:2013,pn:"CC43-67-5RYC / BBM4-67-5RY",fcc:"BGBX1T478SKE125-01",note:"FLIP-MAZ-3B1 (3-button flip)"}
+  ],
+  "SUBARU|FORESTER": [
+    {from:2010,to:2014,pn:"88036-FG030",fcc:"CWTWB1U819",note:"RKE-SUB-4B1 (4-button remote)"},
+    {from:2019,to:2024,pn:"88835-FL03B / 88835-FL03A",fcc:"HYQ14AHK",note:"PRX-SUB-4B2 (4-button prox)"}
+  ],
+  "SUBARU|OUTBACK": [
+    {from:2015,to:2017,pn:"57497-FJ230 / 57497-AL00A",fcc:"CWTWB1U811",note:"RHK-SUB-4B3 (G-chip head key)"},
+    {from:2015,to:2018,pn:"88835-AL04A / 88835-CA310",fcc:"HYQ14AHC",note:"PRX-SUB-4B1 (4-button prox)"},
+    {from:2018,to:2023,pn:"88835-FL03B / 88835-FL03A",fcc:"HYQ14AHK",note:"PRX-SUB-4B2 (4-button prox)"}
+  ],
+  "SUBARU|CROSSTREK": [
+    {from:2018,to:2021,pn:"88835-FL03B / 88835-FL03A",fcc:"HYQ14AHK",note:"PRX-SUB-4B2 (4-button prox)"}
+  ],
+  "SUBARU|IMPREZA": [
+    {from:2017,to:2023,pn:"88835-FL03B / 88835-FL03A",fcc:"HYQ14AHK",note:"PRX-SUB-4B2 (4-button prox)"}
+  ],
+  "BUICK|LESABRE": [
+    {from:1996,to:2000,pn:"25628814 (and related)",fcc:"KOBUT1BT",note:"RKE-GM-4B13 (4-button)"},
+    {from:2001,to:2005,pn:"25695954 (and related)",fcc:"KOBLEAR1XT",note:"RKE-GM-4B12 (4-button)"}
+  ],
+  "BUICK|ENCORE": [
+    {from:2017,to:2020,pn:"13506665",fcc:"HYQ4AA",note:"PRX-BUICK-4B1 (4-button prox)"}
+  ],
+  "BUICK|ENCLAVE": [
+    {from:2018,to:2020,pn:"13521090",fcc:"HYQ4EA",note:"PRX-BUICK-5B2 (5-button prox)"}
+  ],
+  "BUICK|REGAL": [
+    {from:2018,to:2020,pn:"13511629",fcc:"HYQ4EA",note:"PRX-BUICK-4B2 (4-button prox)"}
+  ],
+  "CADILLAC|ATS": [
+    {from:2013,to:2014,pn:"22856930 / 22865375",fcc:"NBG009768T",note:"PRX-CAD-5B1 (5-button prox)"},
+    {from:2015,to:2019,pn:"13510253 / 13598506 / 13594023",fcc:"HYQ2AB",note:"PRX-CAD-4B1 (4-button prox)"}
+  ],
+  "CADILLAC|ESCALADE": [
+    {from:2015,to:2020,pn:"13580812 / 13594028 / 13598511 / 13510242",fcc:"HYQ2AB",note:"PRX-CAD-6B2 (6-button prox)"}
+  ],
+  "CHEVROLET|CAMARO": [
+    {from:2016,to:2021,pn:"13508771 / 13584504 / 13529660",fcc:"HYQ4EA",note:"PRX-CHEVY-4B2 (4-button prox)"}
+  ],
+  "CHEVROLET|EQUINOX": [
+    {from:2018,to:2021,pn:"13529665 / 13585723 / 13508766",fcc:"HYQ4AA",note:"PRX-CHEVY-3B1 (3-button prox)"}
+  ],
+  "CHEVROLET|MALIBU": [
+    {from:2014,to:2016,pn:"13504200 / 13504258 / 13504205",fcc:"OHT01060512",note:"FLIP-GM-4B1HS (4-button flip)"}
+  ],
+  "CHEVROLET|SILVERADO": [
+    {from:2014,to:2020,pn:"13577771",fcc:"M3N-32337100",note:"RKE-GM-3B3 (3-button)"}
+  ],
+  "CHRYSLER|300": [
+    {from:2008,to:2010,pn:"68051664AB (range AB–AH)",fcc:"M3N5WY783X / IYZ-C01C",note:"POD-LAL-3B1 (3-button fob)"}
+  ],
+  "CHRYSLER|PACIFICA": [
+    {from:2017,to:2022,pn:"68217827AC",fcc:"M3N-97395900",note:"PRX-CHRY-3B2 (3-button prox)"}
+  ],
+  "DODGE|DART": [
+    {from:2012,to:2016,pn:"56046771AA / 56046767AA",fcc:"M3N32297100",note:"POD-LAL-4B6 (4-button)"}
   ]
 };
 
