@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VIN Key Fob Lookup — Tulsa Lock Pros</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#0b1220;color:#e8edf7;min-height:100vh}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:22px;margin:8px 0 2px}
+.sub{color:#8fa0bf;font-size:14px;margin:0 0 18px}
+.search{display:flex;gap:8px}
+.search input{flex:1;min-width:0;font-size:17px;letter-spacing:1px;text-transform:uppercase;padding:14px;border-radius:12px;border:1px solid #2a3a5c;background:#fff;color:#0b1220}
+button{font:inherit;cursor:pointer}
+.btn{background:#2f6df6;color:#fff;border:0;border-radius:12px;padding:0 18px;font-weight:600}
+.btn.ghost{background:transparent;border:1px solid #2a3a5c;color:#cdd8ee;padding:10px 14px;border-radius:10px}
+.btn.sm{padding:9px 14px;border-radius:10px}
+.btn:disabled{opacity:.5;cursor:default}
+.hint{font-size:12px;color:#7f90b0;margin:8px 2px 0}
+.card{margin-top:18px;background:#111b30;border:1px solid #22314f;border-radius:18px;padding:18px}
+.head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.veh{font-size:19px;font-weight:700}
+.badge{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px}
+.b-ok{background:#123d2c;color:#4ee0a0}
+.b-warn{background:#3d3112;color:#f0c24e}
+.b-bad{background:#3d1a1a;color:#ff7b7b}
+.b-live{background:#132b4d;color:#7db2ff}
+.pn-label{color:#6f9bff;margin-top:16px;font-size:14px}
+.pn{font-size:34px;font-weight:800;letter-spacing:1px;margin:2px 0 10px;word-break:break-all}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:6px}
+.cell{background:#0c1628;border:1px solid #22314f;border-radius:12px;padding:10px 12px}
+.cell small{display:block;color:#8fa0bf;font-size:12px}
+.cell b{font-size:17px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.stock{margin-top:14px;border:1px solid #22314f;border-radius:12px;padding:12px;background:#0c1628}
+.stock h3{margin:0 0 8px;font-size:14px;color:#8fa0bf;font-weight:600}
+.srow{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:6px 0;font-size:14px;border-top:1px solid #1a2a47}
+.srow:first-of-type{border-top:0}
+.in{color:#4ee0a0;font-weight:700}.out{color:#ff7b7b;font-weight:700}.unk{color:#f0c24e;font-weight:700}
+.src{margin-top:14px;font-size:12px;color:#7f90b0;border-top:1px solid #22314f;padding-top:10px}
+a{color:#6f9bff}
+.msg{color:#cdd8ee;font-size:14px;line-height:1.5;margin:12px 0 0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:9}
+.modal.on{display:flex}
+.box{background:#111b30;border:1px solid #2a3a5c;border-radius:16px;padding:18px;width:100%;max-width:460px;max-height:90vh;overflow:auto}
+.box label{display:block;font-size:12px;color:#8fa0bf;margin:10px 0 3px}
+.box input,.box select,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #2a3a5c;background:#0c1628;color:#fff;font-size:15px}
+textarea{min-height:150px;font-family:ui-monospace,Menlo,monospace;font-size:13px}
+.recent{margin-top:26px}
+.recent h2{font-size:14px;color:#8fa0bf;margin:0 0 8px;font-weight:600}
+.chip{display:inline-block;margin:0 6px 6px 0;padding:6px 10px;border-radius:99px;background:#16233f;border:1px solid #22314f;font-size:12px;cursor:pointer;color:#cdd8ee}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1d2d4d;padding:10px 16px;border-radius:10px;font-size:14px;display:none;z-index:10}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid #2a3a5c;border-top-color:#6f9bff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+footer{margin-top:30px;font-size:11px;color:#50638a;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Key Fob Part Number Lookup</h1>
+  <p class="sub">Enter a US VIN. Decoded live against NHTSA, cross-matched to the key fob database.</p>
+  <div class="search">
+    <input id="vin" maxlength="17" placeholder="17-character VIN" autocomplete="off" autocapitalize="characters" spellcheck="false">
+    <button class="btn" id="go">Lookup</button>
+  </div>
+  <p class="hint" id="hint">Live vehicle decode via NHTSA vPIC (official, free, US government). Part-number data from your saved database.</p>
+  <div class="row" style="margin-top:10px"><button class="btn ghost sm" id="invbtn">My inventory (<span id="invcount">0</span>)</button></div>
+  <div id="out"></div>
+  <div class="recent"><h2>Saved results</h2><div id="chips"></div></div>
+  <footer>Tulsa Lock Pros — internal tool</footer>
+</div>
+
+<div class="modal" id="modal"><div class="box">
+  <b id="mtitle">Add result</b>
+  <label>VIN</label><input id="f_vin" readonly>
+  <label>Year / Make / Model</label><input id="f_veh" placeholder="2008 Toyota Camry">
+  <label>OEM part number</label><input id="f_pn" placeholder="89904-06041">
+  <label>Buttons</label><input id="f_btn" inputmode="numeric" placeholder="4">
+  <label>Frequency</label><input id="f_freq" placeholder="315 MHz">
+  <label>FCC ID</label><input id="f_fcc" placeholder="HYQ14AAB">
+  <label>Keyway</label><input id="f_keyway" placeholder="TOY43">
+  <label>Dealer price (USD)</label><input id="f_price" inputmode="decimal" placeholder="131.89">
+  <label>Source</label><input id="f_src" placeholder="PartsTech / EZ-Codes / dealer call">
+  <div class="row"><button class="btn sm" id="save">Save</button><button class="btn ghost sm" id="cancel">Cancel</button></div>
+</div></div>
+
+<div class="modal" id="invmodal"><div class="box">
+  <b>My inventory</b>
+  <p class="hint">One item per line: <b>type, description, FCC ID, part number, qty</b><br>type = remote, key or blade.</p>
+  <textarea id="invtext" spellcheck="false" placeholder="remote, Camry 4B smart key, HYQ14AAB, 89904-06041, 1"></textarea>
+  <div class="row"><button class="btn sm" id="invsave">Save</button><button class="btn ghost sm" id="invcancel">Close</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ===================== seed data (verified this project) =====================
+var SEED = {
+  "4T1BB46K98U034201":{veh:"2008 Toyota Camry",pn:"89904-06041",buttons:4,freq:"315 MHz",fcc:"HYQ14AAB",price:null,src:"EZ-Codes (Exact Match)",seed:true},
+  "1HGCM82633A004352":{veh:"2003 Honda Accord EX 3.0L V6",pn:"35118-SDA-A11",buttons:null,freq:"",fcc:"",price:131.89,list:164.86,dealer:"Don Carlton Honda",src:"PartsTech dealer (RepairLink)",seed:true},
+  "1C4NJPBB3FD398798":{veh:"2015 Jeep Patriot",pn:"68001702AE",alt:"68000603AC",buttons:null,freq:"",fcc:"",price:172.5,list:231,dealer:"South Pointe Chrysler Jeep Dodge",src:"PartsTech dealer (RepairLink)",seed:true}
+};
+// Ilco Lookalike Coverage Guide 2024 — Toyota Camry cross-reference (year-range fallback when VIN not in SEED)
+var ILCO = {
+  "TOYOTA|CAMRY": [
+    {from:2007,to:2008,pn:"89904-48100",fcc:"HYQ14AAB",note:"PRX-TOY-3B6 (3-button prox)"},
+    {from:2007,to:2009,pn:"89904-06041",fcc:"HYQ14AAB (Board 271451-0140)",note:"PRX-TOY-4B6 (4-button prox)"},
+    {from:2007,to:2011,pn:"89904-06130 / 89904-06131",fcc:"HYQ14AAB (E-Board 271451-3370) / HYQ14AEM (GNE 6601)",note:"PRX-TOY-4B5 (4-button prox)"},
+    {from:2012,to:2017,pn:"89904-06140",fcc:"HYQ14FBA (Board G 00200)",note:"PRX-TOY-4B10 (4-button prox)"},
+    {from:2018,to:2021,pn:"89904-06220",fcc:"HYQ14FBC (Board 231451-0351)",note:"PRX-TOY-4B3 (4-button prox)"}
+  ]
+};
+
+// ===================== vehicle decode =====================
+var decodeCache = {};
+async function decodeVinLive(v){
+  if(decodeCache[v])return decodeCache[v];
+  var ctrl=new AbortController();var t=setTimeout(function(){ctrl.abort()},8000);
+  try{
+    var r=await fetch("https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/"+encodeURIComponent(v)+"?format=json",{signal:ctrl.signal});
+    clearTimeout(t);
+    if(!r.ok)throw new Error("http "+r.status);
+    var j=await r.json();
+    var row=j.Results&&j.Results[0];
+    if(!row)throw new Error("no result");
+    var out={ok:true,make:(row.Make||"").trim(),model:(row.Model||"").trim(),year:row.ModelYear||"",
+      engine:[row.DisplacementL&&(row.DisplacementL+"L"),row.EngineCylinders&&(row.EngineCylinders+"cyl")].filter(Boolean).join(" "),
+      fuel:row.FuelTypePrimary||"",errorCode:row.ErrorCode,errorText:row.ErrorText||""};
+    decodeCache[v]=out;
+    return out;
+  }catch(e){
+    clearTimeout(t);
+    return {ok:false,error:(e&&e.name==="AbortError")?"timeout":String(e&&e.message||e)};
+  }
+}
+
+// ===================== helpers =====================
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function toast(t){var e=$("toast");e.textContent=t;e.style.display="block";setTimeout(function(){e.style.display="none"},1800)}
+function loadUser(){try{return JSON.parse(localStorage.getItem("vinkeys")||"{}")}catch(e){return {}}}
+function saveUser(o){try{localStorage.setItem("vinkeys",JSON.stringify(o));return true}catch(e){return false}}
+function allData(){var u=loadUser();var r={};for(var k in SEED)r[k]=SEED[k];for(var k2 in u)r[k2]=u[k2];return r}
+
+function checkVin(v){
+  if(!/^[A-HJ-NPR-Z0-9]{17}$/.test(v))return "bad";
+  var map={A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,J:1,K:2,L:3,M:4,N:5,P:7,R:9,S:2,T:3,U:4,V:5,W:6,X:7,Y:8,Z:9};
+  var w=[8,7,6,5,4,3,2,10,0,9,8,7,6,5,4,3,2],s=0;
+  for(var i=0;i<17;i++){var c=v[i];var n=/\d/.test(c)?+c:map[c];s+=n*w[i]}
+  var d=s%11;var ch=d===10?"X":String(d);
+  return v[8]===ch?"ok":"checkfail";
+}
+function partsTechUrl(v){return "https://app.partstech.com/searchresult?part_text=key%20fob&vin="+encodeURIComponent(v)+"&page=1"}
+function uhsUrl(q){return "https://www.uhs-hardware.com/search?q="+encodeURIComponent(q)}
+function norm(s){return String(s||"").toUpperCase().replace(/[^A-Z0-9]/g,"")}
+
+function ilcoMatch(make,model,year){
+  var key=(make||"").toUpperCase()+"|"+(model||"").toUpperCase();
+  var rows=ILCO[key];if(!rows)return null;
+  var y=parseInt(year,10);
+  for(var i=0;i<rows.length;i++){if(y>=rows[i].from&&y<=rows[i].to)return rows[i]}
+  return null;
+}
+
+// ===================== inventory =====================
+function loadInvText(){try{return localStorage.getItem("keyinv")||""}catch(e){return ""}}
+function parseInv(){
+  return loadInvText().split("\n").map(function(l){return l.trim()}).filter(Boolean).map(function(l){
+    var p=l.split(",").map(function(x){return x.trim()});
+    return {type:(p[0]||"").toLowerCase(),desc:p[1]||"",fcc:(p[2]||"").toUpperCase(),pn:p[3]||"",qty:parseInt(p[4],10)||0};
+  });
+}
+function stockHtml(fcc,pn,keyway){
+  var inv=parseInv();var nf=norm(fcc),np=norm(pn);
+  var remotes=inv.filter(function(i){return /remote|fob|smart/.test(i.type)&&((nf&&norm(i.fcc)===nf)||(np&&norm(i.pn)===np))});
+  var rq=remotes.reduce(function(s,i){return s+i.qty},0);
+  var h='<div class="stock"><h3>Inventory check</h3>';
+  if(!inv.length){h+='<div class="srow"><span>No inventory saved yet. Tap "My inventory" to add it.</span></div>'}
+  else{
+    h+='<div class="srow"><span>Remote / smart key</span>'+(rq>0?'<span class="in">In stock ×'+rq+'</span>':'<span class="out">Missing</span>')+'</div>';
+    if(keyway){
+      var kw=norm(keyway);
+      var bl=inv.filter(function(i){return /key|blade/.test(i.type)&&!/remote|fob|smart/.test(i.type)&&norm(i.desc+" "+i.pn).indexOf(kw)>=0});
+      var bq=bl.reduce(function(s,i){return s+i.qty},0);
+      h+='<div class="srow"><span>Key blade ('+esc(keyway)+')</span>'+(bq>0?'<span class="in">In stock ×'+bq+'</span>':'<span class="out">Missing</span>')+'</div>';
+    } else {
+      h+='<div class="srow"><span>Key blade</span><span class="unk">Keyway not recorded</span></div>';
+    }
+  }
+  h+='</div>';
+  return h;
+}
+
+// ===================== render =====================
+var reqToken=0;
+async function render(v){
+  var myToken=++reqToken;
+  var out=$("out");var st=checkVin(v);
+  if(st==="bad"){out.innerHTML='<div class="card"><span class="badge b-bad">Invalid VIN</span><p class="msg">A VIN is 17 characters, letters and digits, without I, O or Q.</p></div>';return}
+  var warn=st==="checkfail"?'<p class="msg" style="color:#f0c24e">The VIN check digit does not match. Double-check the characters.</p>':"";
+  var data=allData()[v];
+
+  out.innerHTML='<div class="card"><div class="head"><div class="veh"><span class="spin"></span>Decoding VIN…</div><span class="badge b-live">NHTSA live</span></div>'+warn+'</div>';
+
+  var decode=await decodeVinLive(v);
+  if(myToken!==reqToken)return; // a newer lookup started
+
+  var vehTitle = decode.ok ? [decode.year,decode.make,decode.model].filter(Boolean).join(" ") : (data?data.veh:"Vehicle");
+  var engineLine = decode.ok && decode.engine ? decode.engine+(decode.fuel?(" · "+decode.fuel):"") : "";
+
+  if(data){
+    var h='<div class="card"><div class="head"><div class="veh">'+esc(vehTitle||data.veh)+'</div>'+
+      '<span class="badge b-ok">'+(data.seed?"Verified":"Saved")+'</span></div>';
+    if(engineLine)h+='<div class="hint" style="margin-top:4px">'+esc(engineLine)+'</div>';
+    h+='<div class="pn-label">OEM Key Fob Part Number</div><div class="pn" id="pn">'+esc(data.pn)+'</div>';
+    h+='<div class="row" style="margin:0 0 8px"><button class="btn ghost sm" id="copy">Copy</button></div>';
+    h+='<div class="grid">';
+    h+='<div class="cell"><small>Buttons</small><b>'+(data.buttons||"—")+'</b></div>';
+    h+='<div class="cell"><small>Frequency</small><b>'+esc(data.freq||"—")+'</b></div>';
+    h+='<div class="cell"><small>FCC ID</small><b>'+esc(data.fcc||"—")+'</b></div>';
+    h+='<div class="cell"><small>Dealer price</small><b>'+(data.price?"$"+Number(data.price).toFixed(2):"—")+'</b></div>';
+    if(data.list)h+='<div class="cell"><small>List price</small><b>$'+Number(data.list).toFixed(2)+'</b></div>';
+    if(data.alt)h+='<div class="cell"><small>Interchange</small><b>'+esc(data.alt)+'</b></div>';
+    if(data.dealer)h+='<div class="cell"><small>Dealer</small><b style="font-size:14px">'+esc(data.dealer)+'</b></div>';
+    h+='</div>';
+    h+=warn;
+    h+=stockHtml(data.fcc,data.pn,data.keyway);
+    h+='<div class="src">Source: '+esc(data.src||"manual entry")+(decode.ok?" · Vehicle confirmed live via NHTSA vPIC":"")+'<br>VIN: '+esc(v)+'</div>';
+    h+='<div class="row"><a class="btn ghost sm" style="text-decoration:none" target="_blank" rel="noopener" href="'+partsTechUrl(v)+'">Open in PartsTech</a>';
+    if(data.fcc)h+='<a class="btn ghost sm" style="text-decoration:none" target="_blank" rel="noopener" href="'+uhsUrl(data.fcc)+'">UHS by FCC ID</a>';
+    h+='<button class="btn ghost sm" id="edit">Edit</button></div></div>';
+    out.innerHTML=h;
+    $("copy").onclick=function(){try{navigator.clipboard.writeText(data.pn).then(function(){toast("Copied")},function(){toast(data.pn)})}catch(e){toast(data.pn)}};
+    $("edit").onclick=function(){openModal(v,data)};
+    return;
+  }
+
+  // no saved record — try Ilco year-range match using the live-decoded make/model/year
+  var ilco = decode.ok ? ilcoMatch(decode.make,decode.model,decode.year) : null;
+
+  var h2='<div class="card"><div class="head"><div class="veh">'+esc(vehTitle||"Unknown vehicle")+'</div>';
+  h2+= decode.ok ? '<span class="badge b-live">NHTSA live</span>' : '<span class="badge b-warn">Decode unavailable</span>';
+  h2+='</div>';
+  if(engineLine)h2+='<div class="hint" style="margin-top:4px">'+esc(engineLine)+'</div>';
+  if(!decode.ok)h2+='<p class="msg" style="color:#f0c24e">Could not reach NHTSA ('+esc(decode.error)+'). Check your connection and try again.</p>';
+  h2+=warn;
+
+  if(ilco){
+    h2+='<div class="pn-label">OEM Key Fob Part Number (by year range)</div><div class="pn">'+esc(ilco.pn)+'</div>';
+    h2+='<div class="grid"><div class="cell"><small>FCC ID</small><b style="font-size:14px">'+esc(ilco.fcc)+'</b></div>';
+    h2+='<div class="cell"><small>Years</small><b>'+ilco.from+'–'+ilco.to+'</b></div></div>';
+    h2+='<p class="hint">Matched by year range (Ilco guide), not verified against this exact VIN build. Confirm before ordering.</p>';
+    h2+=stockHtml(ilco.fcc,ilco.pn,null);
+  } else {
+    h2+='<p class="msg">Not in the saved database yet'+(decode.ok?" for "+esc(decode.make)+" "+esc(decode.model):"")+'. Search PartsTech or UHS, then save the result here.</p>';
+  }
+  var q = ilco?ilco.pn:(decode.ok?(decode.year+" "+decode.make+" "+decode.model+" smart key remote"):vehTitle);
+  h2+='<div class="row">';
+  h2+='<a class="btn sm" style="text-decoration:none;display:inline-block;line-height:1.2;padding:12px 16px" target="_blank" rel="noopener" href="'+partsTechUrl(v)+'">Search in PartsTech</a>';
+  h2+='<a class="btn ghost sm" style="text-decoration:none" target="_blank" rel="noopener" href="'+uhsUrl(q)+'">Search UHS Hardware</a>';
+  h2+='<button class="btn ghost sm" id="add">Add result</button>';
+  h2+='</div><div class="src">VIN: '+esc(v)+'</div></div>';
+  out.innerHTML=h2;
+  $("add").onclick=function(){openModal(v,{veh:vehTitle,pn:ilco?ilco.pn:"",fcc:ilco?ilco.fcc:""})};
+}
+
+function openModal(v,d){
+  $("f_vin").value=v;$("f_veh").value=d.veh||"";$("f_pn").value=d.pn||"";$("f_btn").value=d.buttons||"";
+  $("f_freq").value=d.freq||"";$("f_fcc").value=d.fcc||"";$("f_keyway").value=d.keyway||"";$("f_price").value=d.price||"";$("f_src").value=d.src||"";
+  $("modal").classList.add("on");
+}
+$("cancel").onclick=function(){$("modal").classList.remove("on")};
+$("save").onclick=function(){
+  var v=$("f_vin").value;var pn=$("f_pn").value.trim();
+  if(!pn){toast("Part number is required");return}
+  var rec={veh:$("f_veh").value.trim(),pn:pn,buttons:+$("f_btn").value||null,freq:$("f_freq").value.trim(),
+    fcc:$("f_fcc").value.trim().toUpperCase(),keyway:$("f_keyway").value.trim().toUpperCase(),
+    price:parseFloat($("f_price").value)||null,src:$("f_src").value.trim()||"manual entry"};
+  var u=loadUser();u[v]=rec;
+  if(saveUser(u))toast("Saved");else toast("Could not save (storage unavailable)");
+  $("modal").classList.remove("on");render(v);chips();
+};
+function chips(){
+  var d=allData();var h="";
+  Object.keys(d).forEach(function(k){h+='<span class="chip" data-v="'+k+'">'+esc(d[k].veh)+' · '+esc(d[k].pn)+'</span>'});
+  $("chips").innerHTML=h;
+  [].forEach.call(document.querySelectorAll(".chip"),function(c){c.onclick=function(){var v=c.getAttribute("data-v");$("vin").value=v;render(v)}});
+}
+function go(){var v=$("vin").value.trim().toUpperCase().replace(/\s+/g,"");$("vin").value=v;if(v)render(v)}
+$("go").onclick=go;
+$("vin").addEventListener("keydown",function(e){if(e.key==="Enter")go()});
+
+function updInvCount(){$("invcount").textContent=parseInv().length}
+$("invbtn").onclick=function(){$("invtext").value=loadInvText();$("invmodal").classList.add("on")};
+$("invcancel").onclick=function(){$("invmodal").classList.remove("on")};
+$("invsave").onclick=function(){
+  var t=$("invtext").value;
+  try{localStorage.setItem("keyinv",t);toast("Inventory saved")}catch(e){toast("Could not save")}
+  $("invmodal").classList.remove("on");updInvCount();
+  var v=$("vin").value.trim().toUpperCase();if(v.length===17)render(v);
+};
+updInvCount();
+chips();
+</script>
+</body>
+</html>
