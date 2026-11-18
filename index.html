@@ -298,7 +298,8 @@ var ILCO = {
     {from:2014,to:2016,pn:"13504200 / 13504258 / 13504205",fcc:"OHT01060512",note:"FLIP-GM-4B1HS (4-button flip)"}
   ],
   "CHEVROLET|SILVERADO": [
-    {from:2014,to:2020,pn:"13577771",fcc:"M3N-32337100",note:"RKE-GM-3B3 (3-button)"}
+    {from:2014,to:2020,pn:"13577771",fcc:"M3N-32337100",note:"Standard remote + separate blade key — turn-key ignition trims (3-button)",
+      alt:{pn:"13508280 / 13580804",fcc:"HYQ1AA",note:"Smart Key — push-button Start/Stop trims (High Country etc., 6-button, shared w/ Sierra)"}}
   ],
   "CHRYSLER|300": [
     {from:2008,to:2010,pn:"68051664AB (range AB–AH)",fcc:"M3N5WY783X / IYZ-C01C",note:"POD-LAL-3B1 (3-button fob)"}
@@ -334,11 +335,13 @@ var ILCO = {
     {from:2012,to:2018,pn:"5921709",fcc:"OUCD6000022",note:"FLIP-FORD-4B1 (4-button flip key, shared w/ Escape)"}
   ],
   "GMC|SIERRA": [
-    {from:2014,to:2018,pn:"13508280 / 13580804",fcc:"HYQ1AA",note:"PRX-GM-6B1 (6-button smart key, shared w/ Yukon)"},
+    {from:2014,to:2018,pn:"13508280 / 13580804",fcc:"HYQ1AA",note:"Smart Key — push-button Start/Stop trims (6-button, shared w/ Yukon)",
+      alt:{pn:"13577770 / 13577771 / 13580082",fcc:"M3N-32337100",note:"Standard remote + separate blade key — turn-key ignition trims (base/SLE, 3-4 button)"}},
     {from:2019,to:2022,pn:"13591396",fcc:"HYQ1EA",note:"PRX-GM-5B1 (5-button smart key w/tailgate)"}
   ],
   "GMC|YUKON": [
-    {from:2015,to:2020,pn:"13508280 / 13580804 / 5944134",fcc:"HYQ1AA",note:"PRX-GM-6B1 (6-button smart key w/remote start)"}
+    {from:2015,to:2020,pn:"13508280 / 13580804 / 5944134",fcc:"HYQ1AA",note:"Smart Key — push-button Start/Stop trims (6-button w/remote start)",
+      alt:{pn:"13577770 / 13577771",fcc:"M3N-32337100",note:"Standard remote + separate blade key — turn-key ignition trims (3-button)"}}
   ],
   "GMC|TERRAIN": [
     {from:2018,to:2022,pn:"13584512",fcc:"HYQ1AA",note:"PRX-GM-4B1 (4-button smart key)"},
@@ -442,11 +445,11 @@ function parseInv(){
     return {type:(p[0]||"").toLowerCase(),desc:p[1]||"",fcc:(p[2]||"").toUpperCase(),pn:p[3]||"",qty:parseInt(p[4],10)||0};
   });
 }
-function stockHtml(fcc,pn,keyway){
+function stockHtml(fcc,pn,keyway,label){
   var inv=parseInv();var nf=norm(fcc),np=norm(pn);
   var remotes=inv.filter(function(i){return /remote|fob|smart/.test(i.type)&&((nf&&norm(i.fcc)===nf)||(np&&norm(i.pn)===np))});
   var rq=remotes.reduce(function(s,i){return s+i.qty},0);
-  var h='<div class="stock"><h3>Inventory check</h3>';
+  var h='<div class="stock"><h3>Inventory check'+(label?' — '+esc(label):'')+'</h3>';
   if(!inv.length){h+='<div class="srow"><span>No inventory saved yet. Tap "My inventory" to add it.</span></div>'}
   else{
     h+='<div class="srow"><span>Remote / smart key</span>'+(rq>0?'<span class="in">In stock ×'+rq+'</span>':'<span class="out">Missing</span>')+'</div>';
@@ -518,11 +521,22 @@ async function render(v){
   h2+=warn;
 
   if(ilco){
-    h2+='<div class="pn-label">OEM Key Fob Part Number (by year range)</div><div class="pn">'+esc(ilco.pn)+'</div>';
-    h2+='<div class="grid"><div class="cell"><small>FCC ID</small><b style="font-size:14px">'+esc(ilco.fcc)+'</b></div>';
-    h2+='<div class="cell"><small>Years</small><b>'+ilco.from+'–'+ilco.to+'</b></div></div>';
+    h2+='<div class="pn-label">OEM Key Fob Part Number (by year range)</div>';
+    if(ilco.alt){
+      h2+='<p class="msg" style="color:#f0c24e">This model/year used two different key systems depending on trim — check the vehicle before ordering:</p>';
+      h2+='<div class="grid" style="grid-template-columns:1fr">';
+      h2+='<div class="cell"><small>Option A — '+esc(ilco.note||"")+'</small><b style="font-size:20px;display:block;margin-top:4px">'+esc(ilco.pn)+'</b><div class="hint" style="margin:4px 0 0">FCC ID: '+esc(ilco.fcc)+'</div></div>';
+      h2+='<div class="cell"><small>Option B — '+esc(ilco.alt.note||"")+'</small><b style="font-size:20px;display:block;margin-top:4px">'+esc(ilco.alt.pn)+'</b><div class="hint" style="margin:4px 0 0">FCC ID: '+esc(ilco.alt.fcc)+'</div></div>';
+      h2+='</div>';
+      h2+='<p class="hint">Push-button Start/Stop ignition → Smart Key (Option A). Turn-key ignition → standard remote + separate blade key (Option B). Years shown: '+ilco.from+'–'+ilco.to+'.</p>';
+    } else {
+      h2+='<div class="pn">'+esc(ilco.pn)+'</div>';
+      h2+='<div class="grid"><div class="cell"><small>FCC ID</small><b style="font-size:14px">'+esc(ilco.fcc)+'</b></div>';
+      h2+='<div class="cell"><small>Years</small><b>'+ilco.from+'–'+ilco.to+'</b></div></div>';
+    }
     h2+='<p class="hint">Matched by year range (Ilco guide), not verified against this exact VIN build. Confirm before ordering.</p>';
-    h2+=stockHtml(ilco.fcc,ilco.pn,null);
+    if(ilco.alt){h2+=stockHtml(ilco.fcc,ilco.pn,null,"Option A")+stockHtml(ilco.alt.fcc,ilco.alt.pn,null,"Option B")}
+    else{h2+=stockHtml(ilco.fcc,ilco.pn,null)}
   } else {
     h2+='<p class="msg">Not in the saved database yet'+(decode.ok?" for "+esc(decode.make)+" "+esc(decode.model):"")+'. Search PartsTech or UHS, then save the result here.</p>';
   }
